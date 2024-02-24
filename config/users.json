@@ -1,0 +1,7 @@
+{
+    "user": "bd556ff4d56932",
+    "password": "e67b56d3",
+    "host": "us-cluster-east-01.k8s.cleardb.net",
+    "database": "heroku_e97e3cf1c75a006",
+    "port": 3306
+}
