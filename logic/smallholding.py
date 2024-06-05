@@ -1,164 +1,168 @@
 class Smallholding(object):
-
+    
     """
-    Class used to represent a Smallholding.
+    Class to represent a piece of land.
     """
 
-    def __init__(self, id: int = None, size: float = 0.0, ubication: str = None,
-                 shape: str = "Rectangular", delimited: bool = False):
+    def __init__(self, id: int = None, size: float = 0.0, ubication: str = None, shape: str = "Regular o Irregular",
+                 delimited: bool = True):
         """
-        Constructor for Smallholding class
-        :param id: Smallholding id
-        :type id: int
-        :param size: Smallholding size
-        :type size: float
-        :param ubication: Smallholding ubication
-        :type ubication: str
-        :param shape: Smallholding shape
-        :type shape: str
-        :param delimited: Smallholding delimited
-        :type delimited: bool
+        Constructor for Smallholding class.
         """
         self._id = id
         self._size = size
         self._ubication = ubication
-        self._shape = shape
+        self._shape = shape.title()
         self._delimited = delimited
     
     @property
     def id(self) -> int:
         """
-        Getter for the smallholding id.
-        :return: the smallholding id
+        Getter for the id attribute.
+        :return: the id of the smallholding
         :rtype: int
         """
         return self._id
-
-    @id.setter
-    def id(self, id: int) -> None:
-        """
-        Setter for the smallholding id.
-        :param id: the smallholding id
-        :type id: int
-        """
-        self._id = id
     
+    @id.setter
+    def id(self, value: int):
+        """
+        Setter for the id attribute.
+        :param value: the new value for the id of the smallholding
+        :type value: int
+        """
+        self._id = value
+
     @property
     def size(self) -> float:
         """
-        Getter for the smallholding size.
-        :return: the smallholding size
+        Getter for the size attribute.
+        :return: the size of the smallholding
         :rtype: float
         """
         return self._size
     
     @size.setter
-    def size(self, size: float) -> None:
+    def size(self, value: float):
         """
-        Setter for the smallholding size.
-        :param size: the smallholding size
-        :type size: float
+        Setter for the size attribute.
+        :param value: the new value for the size of the smallholding
+        :type value: float
         """
-        self._size = size
+        self._size = value
     
     @property
     def ubication(self) -> str:
         """
-        Getter for the smallholding ubication.
-        :return: the smallholding ubication
+        Getter for the ubication attribute.
+        :return: the ubication of the smallholding
         :rtype: str
         """
         return self._ubication
     
     @ubication.setter
-    def ubication(self, ubication: str) -> None:
+    def ubication(self, value: str):
         """
-        Setter for the smallholding ubication.
-        :param ubication: the smallholding ubication
-        :type ubication: str
+        Setter for the ubication attribute.
+        :param value: the new value for the ubication of the smallholding
+        :type value: str
         """
-        self._ubication = ubication
+        self._ubication = value
     
     @property
     def shape(self) -> str:
         """
-        Getter for the smallholding shape.
-        :return: the smallholding shape
+        Getter for the shape attribute.
+        :return: the shape of the smallholding
         :rtype: str
         """
         return self._shape
     
     @shape.setter
-    def shape(self, shape: str) -> None:
+    def shape(self, value: str):
         """
-        Setter for the smallholding shape.
-        :param shape: the smallholding shape
-        :type shape: str
+        Setter for the shape attribute.
+        :param value: the new value for the shape of the smallholding
+        :type value: str
         """
-        self._shape = shape
+        self._shape = value
     
     @property
     def delimited(self) -> bool:
         """
-        Getter for the smallholding delimited.
-        :return: the smallholding delimited
+        Getter for the delimited attribute.
+        :return: delimited of the smallholding
         :rtype: bool
         """
         return self._delimited
     
     @delimited.setter
-    def delimited(self, delimited: bool) -> None:
+    def delimited(self, value: bool):
         """
-        Setter for the smallholding delimited.
-        :param delimited: the smallholding delimited
-        :type delimited: bool
+        Setter for the delimited attribute.
+        :param value: the new value for the delimitation of the smallholding
+        :type value: bool
         """
-        self._delimited = delimited
+        self._delimited = value
     
-    def __str__(self) -> str:
+    def __str__(self):
         """
-        Method used to represent a Smallholding as a string
-        :return: the smallholding as a string
+        Method to represent the object as a string.
+        :return: the object as a string
         :rtype: str
         """
-        return f"Smallholding: [{self._id}, {self._size}, {self._ubication}, {self._shape}, {self._delimited}]"
+        return "Smallholding: [size: {}, ubication: {}, shape: {}, delimited: {}]".format(
+            self._size, self._ubication, self._shape, self._delimited)
 
-    def __dict__(self) -> dict:
+    def __tuple__(self):
         """
-        Method used to represent a Smallholding as a dictionary
-        :return: the smallholding as a dictionary
-        :rtype: dict
-        """
-        return {"id": self._id, "size": self._size, "ubication": self._ubication, "shape": self._shape, "delimited": 'Yes' if self._delimited else 'No'}
-    
-    def __tuple__(self) -> tuple:
-        """
-        Method used to represent a Smallholding as a tuple
-        :return: the smallholding as a tuple
+        Method to represent the object as a tuple.
+        :return: the object as a tuple
         :rtype: tuple
         """
-        return (self._id, self._size, self._ubication, self._shape, self._delimited)
+        return self._size, self._ubication, self._shape, self._delimited
 
+    def __update_tuple__(self):
+        """
+        Method to represent the object as a tuple.
+        :return: the object as a tuple
+        :rtype: tuple
+        """
+        return self._size, self._ubication, self._shape, self._delimited, self._id
+
+    def __dict__(self):
+        """
+        Method to represent the object as a dictionary.
+        :return: the object as a dictionary
+        :rtype: dict
+        """
+        return {
+            "id": self._id,
+            "size": self._size,
+            "ubication": self._ubication,
+            "shape": self._shape,
+            "delimited": self._delimited
+        }
+    
     def __eq__(self, other: object) -> bool:
         """
-        Method used to compare two Smallholdings
-        :param other: the other Smallholding
+        Method to compare two objects.
+        :param other: the other object
         :type other: object
-        :return: True if they are equal, False otherwise
+        :return: True if the objects are equal, False otherwise
         :rtype: bool
         """
-        if not isinstance(other, Smallholding):
-            return False
-        return self._id == other.id and self._size == other.size and self._ubication == other.ubication and self._shape == other.shape and self._delimited == other.delimited
-
+        if isinstance(other, Smallholding):
+            return (self._id == other.id and self._size == other.size and self._ubication == other.ubication and
+                    self._shape == other.shape and self._delimited == other.delimited)
+        return False
+    
     def __ne__(self, other: object) -> bool:
         """
-        Method used to compare two Smallholdings
-        :param other: the other Smallholding
+        Method to compare two objects.
+        :param other: the other object
         :type other: object
-        :return: True if they are not equal, False otherwise
+        :return: True if the objects are not equal, False otherwise
         :rtype: bool
         """
         return not self.__eq__(other)
-    
-

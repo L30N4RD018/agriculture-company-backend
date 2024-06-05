@@ -1,39 +1,38 @@
 from __future__ import annotations
-from logic.state import CropState, SownState
 from datetime import date
+from logic.crop_state import Sown, Germinated, Storaged, Delivering, Delivered
+
 
 class Crop(object):
-
     """
-    Class used to represent a Crop
+    Class used to represent a crop.
     """
-
-    def __init__(self, id: int = None, type: str = 'Crop Type',
-                 state: CropState = SownState(), sow_date: date = date.today(),
+    def __init__(self, id: int = None, type: str = 'type',
+                 state: str = None, sow_date: date = date.today(),
                  harvest_date: date = None, storage_id: int = None,
-                 smallholding_id: int = None, quantity: int = 0):
+                 smallholding_id: int = None, quantity: int = 0) -> None:
         """
-        Constructor for Crop class
-        :param id: Crop id
+        Constructor for the Crop class.
+        :param id: the id of the crop
         :type id: int
-        :param type: Crop type
+        :param type: the type of the crop
         :type type: str
-        :param state: Crop state
-        :type state: str
-        :param sow_date: Crop sow date
-        :type sow_date: date
-        :param harvest_date: Crop harvest date
-        :type harvest_date: date
-        :param storage_id: Crop storage id
+        :param state: the state of the crop
+        :type state: object
+        :param sow_date: the date the crop was sown
+        :type sow_date: datetime
+        :param harvest_date: the date the crop was harvested
+        :type harvest_date: datetime
+        :param storage_id: the id of the storage where the crop is stored
         :type storage_id: int
-        :param smallholding_id: Crop smallholding id
+        :param smallholding_id: the id of the smallholding where the crop is stored
         :type smallholding_id: int
-        :param quantity: Crop quantity
-        :type quantity: int        
+        :param quantity: the quantity of the crop
+        :type quantity: int
         """
         self._id = id
-        self._type = type.capitalize()
-        self._state = state
+        self._type = type.title() if type is not None else None
+        self._state = state.title() if state is not None else None
         self._sow_date = sow_date
         self._harvest_date = harvest_date
         self._storage_id = storage_id
@@ -50,11 +49,12 @@ class Crop(object):
         return self._id
     
     @id.setter
-    def id(self, id: int) -> None:        
+    def id(self, id: int) -> None:
         """
         Setter for the crop id.
-        :param id: the crop id
+        :param id: the new crop id
         :type id: int
+        :return: None
         """
         self._id = id
     
@@ -71,35 +71,37 @@ class Crop(object):
     def type(self, type: str) -> None:
         """
         Setter for the crop type.
-        :param type: the crop type
+        :param type: the new crop type
         :type type: str
+        :return: None
         """
         self._type = type
     
     @property
-    def state(self) -> str:
+    def state(self) -> object:
         """
         Getter for the crop state.
         :return: the crop state
-        :rtype: str
+        :rtype: object
         """
         return self._state
     
     @state.setter
-    def state(self, state: CropState) -> None:
+    def state(self, state: object) -> None:
         """
         Setter for the crop state.
-        :param state: the crop state
-        :type state: str
+        :param state: the new crop state
+        :type state: object
+        :return: None
         """
-        self._state = state        
-
+        self._state = state
+    
     @property
     def sow_date(self) -> date:
         """
         Getter for the crop sow date.
         :return: the crop sow date
-        :rtype: date
+        :rtype: datetime
         """
         return self._sow_date
     
@@ -107,17 +109,18 @@ class Crop(object):
     def sow_date(self, sow_date: date) -> None:
         """
         Setter for the crop sow date.
-        :param sow_date: the crop sow date
-        :type sow_date: date
+        :param sow_date: the new crop sow date
+        :type sow_date: datetime
+        :return: None
         """
         self._sow_date = sow_date
-
+    
     @property
     def harvest_date(self) -> date:
         """
         Getter for the crop harvest date.
         :return: the crop harvest date
-        :rtype: date
+        :rtype: datetime
         """
         return self._harvest_date
     
@@ -125,11 +128,12 @@ class Crop(object):
     def harvest_date(self, harvest_date: date) -> None:
         """
         Setter for the crop harvest date.
-        :param harvest_date: the crop harvest date
-        :type harvest_date: date
+        :param harvest_date: the new crop harvest date
+        :type harvest_date: datetime
+        :return: None
         """
         self._harvest_date = harvest_date
-    
+
     @property
     def storage_id(self) -> int:
         """
@@ -143,8 +147,9 @@ class Crop(object):
     def storage_id(self, storage_id: int) -> None:
         """
         Setter for the crop storage id.
-        :param storage_id: the crop storage id
+        :param storage_id: the new crop storage id
         :type storage_id: int
+        :return: None
         """
         self._storage_id = storage_id
     
@@ -161,10 +166,11 @@ class Crop(object):
     def smallholding_id(self, smallholding_id: int) -> None:
         """
         Setter for the crop smallholding id.
-        :param smallholding_id: the crop smallholding id
+        :param smallholding_id: the new crop smallholding id
         :type smallholding_id: int
+        :return: None
         """
-        self._smallholding_id = smallholding_id    
+        self._smallholding_id = smallholding_id
     
     @property
     def quantity(self) -> int:
@@ -179,61 +185,88 @@ class Crop(object):
     def quantity(self, quantity: int) -> None:
         """
         Setter for the crop quantity.
-        :param quantity: the crop quantity
+        :param quantity: the new crop quantity
         :type quantity: int
+        :return: None
         """
-        self._quantity = quantity    
+        self._quantity = quantity
     
+    def change_state(self, state: str):
+        """
+        Method used to change the state of a crop.
+        :param state: the new state of the crop
+        :type state: str
+        :return: None
+        """
+        states = {'sown': Sown(), 'germinated': Germinated(), 'storaged': Storaged(), 'delivering': Delivering(),
+                  'delivered': Delivered()}
+        self._state = states[state.lower()]
+        self.state.crop = self
+        return self
+
     def __str__(self) -> str:
         """
-        Methor used to represent a Crop as a string.
-        :return: the crop as a string.
+        Method used to represent the crop as a string.
+        :return: the crop as a string
         :rtype: str
         """
-        return f'Crop: [{self._id}, {self._type}, {self._state.__str__()}, {self._sow_date}, {self._harvest_date}, {self._storage_id}, {self._smallholding_id}, {self._quantity}]'
+        return (f'({self._type}, {self._state}, {self._sow_date}, {self._harvest_date}, '
+                f'{self._storage_id}, {self._smallholding_id},{self._quantity})')
     
     def __dict__(self) -> dict:
         """
-        Method used to represent a Crop as a dictionary.
+        Method used to represent the crop as a dictionary.
         :return: the crop as a dictionary
         :rtype: dict
         """
-        return {'id': self._id, 'type': self._type, 'state': self._state.__str__(), 
-                'sow_date': self._sow_date.isoformat() if self._sow_date else None
-                , 'harvest_date': self._harvest_date.isoformat() if self._harvest_date else None, 
-                'storage_id': self._storage_id, 'smallholding_id': self._smallholding_id, 
-                'quantity': self._quantity}
+        return {
+                'id': self._id, 'type': self._type, 'state': self._state, 
+                'sow_date': self._sow_date.isoformat() if self._sow_date is not None else None,
+                'harvest_date': self._harvest_date.isoformat() if self._harvest_date is not None else None,
+                'storage_id': self._storage_id, 
+                'smallholding_id': self._smallholding_id, 
+                'quantity': self._quantity
+                }
     
-    def __tuple__(self) -> tuple:
-        """
-        Method used to represent a Crop as a tuple.
-        :return: the crop as a tuple
-        :rtype: tuple
-        """
-        return (self._id,self._type, self._state.__str__(), self._sow_date, 
-                self._harvest_date, self._storage_id, self._smallholding_id, 
-                self._quantity)
-
     def __eq__(self, other: object) -> bool:
         """
-        Method used to compare two crops.
+        Method used to check if two crops are equal.
         :param other: the other crop
         :type other: Crop
-        :return: True if the crops are the same, False otherwise
+        :return: True if the crops are equal, False otherwise
         :rtype: bool
         """
         if not isinstance(other, Crop):
             return False
-        return self._id == other.id and self._type == other.type and self._state == other.state and self._sow_date == other.sow_date and self._harvest_date == other.harvest_date and self._storage_id == other.storage_id and self._smallholding_id == other.smallholding_id and self._quantity == other.quantity
+        return  self._id == other._id and self._type == other._type and \
+                self._state == other._state and self._sow_date == other._sow_date and \
+                self._harvest_date == other._harvest_date and self._quantity == other._quantity and \
+                self._storage_id == other._storage_id and self._smallholding_id == other._smallholding_id
     
-    def __ne__(self, other: object) -> bool:
+    def __ne__(self, other) -> bool:
         """
-        Method used to compare two crops.
+        Method used to check if two crops are not equal.
         :param other: the other crop
         :type other: Crop
-        :return: True if the crops are different, False otherwise
+        :return: True if the crops are not equal, False otherwise
         :rtype: bool
         """
-        return not self.__eq__(other)
-            
+        return not self == other
 
+    def __tuple__(self) -> tuple:
+        """
+        Method used to represent the crop as a tuple.
+        :return: the crop as a tuple
+        :rtype: tuple
+        """
+        return (self._type, self._state, self._sow_date, self._harvest_date, 
+                self._storage_id, self._smallholding_id, self._quantity)
+
+    def __update_tuple__(self) -> tuple:
+        """
+        Method used to represent the crop as a tuple.
+        :return: the crop as a tuple
+        :rtype: tuple
+        """
+        return (self._type, self._state, self._sow_date, self._harvest_date, 
+                self._storage_id, self._smallholding_id,  self._quantity, self._id)
