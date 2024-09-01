@@ -1,0 +1,12 @@
+version: '3.9'
+
+services:
+  web:
+    build: .
+    ports:
+      - 80:8000
+    environment:
+      - DB_HOST=agcompanydb.centralus.cloudapp.azure.com
+      - DB_USER=developer
+      - DB_PASSWORD=developer1234
+      - DB_NAME=ag_company_data
