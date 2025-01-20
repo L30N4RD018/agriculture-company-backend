@@ -220,7 +220,9 @@ class Crop(object):
         :rtype: dict
         """
         return {
-                'id': self._id, 'type': self._type, 'state': self._state, 
+                'id': self._id, 
+                'type': self._type, 
+                'state': self._state, 
                 'sow_date': self._sow_date.isoformat() if self._sow_date is not None else None,
                 'harvest_date': self._harvest_date.isoformat() if self._harvest_date is not None else None,
                 'storage_id': self._storage_id, 

@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
-from controllers.crops_controller import CropsController
+from controllers.crop_controller import CropsController
 from logic.crop import Crop
 from datetime import date
 

@@ -2,12 +2,14 @@ FROM python:3.12-slim
 
 RUN mkdir -p /home/app
 
-COPY . /home/app
-
 WORKDIR /home/app
 
-RUN pip install -r requirements.txt
+COPY ./requirements.txt /home/app/
 
-CMD ["python", "app.py"]
+RUN pip install --no-cache-dir -r requirements.txt
 
-ENTRYPOINT uvicorn app:app --host=0.0.0.0 --port=${PORT:-8000}
+COPY . /home/app
+
+EXPOSE 80
+
+ENTRYPOINT ["uvicorn", "app:app", "--host=0.0.0.0", "--port", "80"]

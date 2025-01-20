@@ -5,13 +5,13 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 import uvicorn, os
 
-load_dotenv('.env.local')
+load_dotenv('.env')
 
 app = FastAPI()
 
 origins = ["*"]
 
-PC = PredictionController()
+#PC = PredictionController()
 
 app.add_middleware(
     CORSMiddleware,
@@ -45,10 +45,10 @@ app.include_router(details.router)
 app.include_router(users.router)
 
 
-@app.get("/api/make_recomendation", tags=["IA"])
-async def make_recomendation():
-    return PC.recomendations()
+# @app.get("/api/make_recomendation", tags=["IA"])
+# async def make_recomendation():
+#     return PC.recomendations()
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="192.168.35.107", port=80)
+    uvicorn.run(app, host="192.168.35.106", port=80)

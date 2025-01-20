@@ -20,7 +20,7 @@ class StorageController(object):
                 cursor.execute(self._querys["SHOW_STORAGES"])
                 storages = cursor.fetchall()
                 if len(storages) == 0:
-                    raise HTTPException(status_code=400, detail={"message": "Storages not found"})
+                    raise HTTPException(status_code=400, detail={"error": "Storages not found"})
                 storages = [Storage(*storage).__dict__() for storage in storages]
                 return JSONResponse(status_code=200, content=storages)
             except mc.Error:
@@ -38,10 +38,10 @@ class StorageController(object):
         ) as connection, connection.cursor() as cursor:
             try:
                 if storage.current_capacity < 0 or storage.max_capacity < 0:
-                    raise HTTPException(status_code=400, detail={"message": "Invalid capacity"})
+                    raise HTTPException(status_code=400, detail={"error": "Invalid capacity"})
 
                 if storage.current_capacity > storage.max_capacity:
-                    raise HTTPException(status_code=400, detail={"message": "Current capacity can't be greater than max capacity"})
+                    raise HTTPException(status_code=400, detail={"error": "Current capacity can't be greater than max capacity"})
                 cursor.execute(self._querys["STORAGE_INSERT"], storage.__tuple__())
                 connection.commit()
                 storage_id = cursor.lastrowid
@@ -61,18 +61,18 @@ class StorageController(object):
         ) as connection, connection.cursor() as cursor:
             try:
                 if storage.id <= 0:
-                    raise HTTPException(status_code=400, detail={"message": "Invalid id"})
+                    raise HTTPException(status_code=400, detail={"error": "Invalid id"})
 
                 cursor.execute(self._querys["SEARCH_STORAGE"], (storage.id,))
                 storg = cursor.fetchone()
                 if storg is None:
-                    return HTTPException(status_code=404, content={"Error": "Storage not found"})
+                    return HTTPException(status_code=404, content={"message": "Storage not found"})
 
                 if storage.current_capacity < 0 or storage.max_capacity < 0:
-                    raise HTTPException(status_code=400, detail={"Error": "Invalid capacity"})
+                    raise HTTPException(status_code=400, detail={"error": "Invalid capacity"})
 
                 if storage.current_capacity > storage.max_capacity:
-                    raise HTTPException(status_code=400, detail={"Error": "Current capacity can't be greater than max capacity"})
+                    raise HTTPException(status_code=400, detail={"error": "Current capacity can't be greater than max capacity"})
 
                 cursor.execute(self._querys["STORAGE_UPDATE"], storage.__update_tuple__())
                 connection.commit()
@@ -91,15 +91,15 @@ class StorageController(object):
         ) as connection, connection.cursor() as cursor:
             try:
                 if id_storage <= 0:
-                    raise HTTPException(status_code=400, detail={"Error": "Invalid id"})
+                    raise HTTPException(status_code=400, detail={"error": "Invalid id"})
 
                 cursor.execute(self._querys["SEARCH_STORAGE"], (id_storage,))
                 storage = cursor.fetchone()
                 if storage is None:
-                    return HTTPException(status_code=404, content={"Error": "Storage not found"})
+                    return HTTPException(status_code=404, content={"message": "Storage not found"})
 
                 if self.show_storage_crops(id_storage).status_code == 200:
-                    raise HTTPException(status_code=400, detail={"Error": "Storage has crops"})
+                    raise HTTPException(status_code=400, detail={"error": "Storage has crops"})
 
                 cursor.execute(self._querys["STORAGE_DELETE"], (id_storage,))
                 connection.commit()
@@ -120,7 +120,7 @@ class StorageController(object):
                 cursor.execute(self._querys["SEARCH_STORAGE"], (id_storage,))
                 storage = cursor.fetchone()
                 if storage is None:
-                    raise HTTPException(status_code=404, detail={"Error": "Storage not found"})
+                    raise HTTPException(status_code=404, detail={"error": "Storage not found"})
                 storage = Storage(*storage).__dict__()
                 return JSONResponse(status_code=200, content=storage)
             except mc.Error:
@@ -135,7 +135,7 @@ class StorageController(object):
         ) as connection, connection.cursor() as cursor:
             try:
                 if id_storage <= 0 or id_storage is None:
-                    raise HTTPException(status_code=400, detail={"Error": "Invalid id"})
+                    raise HTTPException(status_code=400, detail={"error": "Invalid id"})
                 cursor.execute(self._querys["SHOW_STORAGE_CROPS"], (id_storage,))                
                 crops = cursor.fetchall()                
                 crops = [{
