@@ -228,21 +228,24 @@ class CropsController(object):
             database=os.getenv('DB_NAME')
         ) as connection, connection.cursor() as cursor:
             try:
-                cursor.execute(self._querys["SHOW_CROPS_MONTH"])
-                details = cursor.fetchall()
-                if details is None:
-                    return JSONResponse(status_code=404, content={"message": "Any crops found"})
+                cursor.execute(self._querys["GET_HARVESTED_CROPS"])
+                harvested_crops = cursor.fetchall()
+                cursor.execute(self._querys["GET_SOWN_CROPS"])
+                sown_crops = cursor.fetchall()
                 date_details = []
-                for month in range(1, 13):
-                    temp = {
-                        'month': MONTHS[month],
-                        'crops': 0
-                    }                   
-                    for detail in details:       
-                        if detail[1] == month:                 
-                            temp['crops'] = detail[2]
-                            break
-                    date_details.append(temp)                 
+                for month in MONTHS.values():
+                    month_details = {
+                        'month': month,
+                        'sown': 0,
+                        'harvested': 0,
+                    }                    
+                    for crop in sown_crops:                        
+                        if crop[3].strftime("%b").upper() == month:
+                            month_details['sown'] += 1
+                    for crop in harvested_crops:
+                        if crop[4].strftime("%b").upper() == month:
+                            month_details['harvested'] += 1
+                    date_details.append(month_details)
                 return JSONResponse(status_code=200, content=date_details)
             except mc.Error:
                 raise HTTPException(status_code=400, detail=f"Error: Can't show crops per month")

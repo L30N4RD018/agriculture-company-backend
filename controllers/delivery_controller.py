@@ -140,8 +140,8 @@ class DeliveryController(object):
                 if crop is None:
                     raise HTTPException(status_code=404, detail={"error": "Crop not found"})
                 else:
-                    if crop[4] != "Storaged":
-                        raise HTTPException(status_code=400, detail={"error": "Crop not storaged"})
+                    if crop[4] != "Stored":
+                        raise HTTPException(status_code=400, detail={"error": "Crop not Stored"})
                     if crop[7] < quantity:
                         raise HTTPException(status_code=400, detail={"error": "Quantity not available"})
                     else:

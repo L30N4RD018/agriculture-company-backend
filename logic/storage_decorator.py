@@ -2,15 +2,15 @@ from logic.storage import Storage
 from fastapi import HTTPException
 
 
-class StorageDecorator(object):
+class Storedecorator(object):
     
     """
-    StorageDecorator is a class that represents a decorator for a crop storage.
+    Storedecorator is a class that represents a decorator for a crop storage.
     """
 
     def __init__(self, storage: Storage = Storage ()):
         """
-        Constructor for StorageDecorator class.
+        Constructor for Storedecorator class.
         :param crop_storage: the crop storage to decorate
         :type crop_storage: Storage
         """

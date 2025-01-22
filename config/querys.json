@@ -5,7 +5,9 @@
     "CROP_DELETE": "delete from crops where id = %s",
     "SHOW_CROPS": "select * from crops",
     "SEARCH_CROP": "select * from crops where id = %s",
-    "SHOW_CROPS_MONTH": "SELECT YEAR(sow_date) AS year, MONTH(sow_date) AS month, COUNT(*) AS crops FROM crops WHERE YEAR(sow_date) = YEAR(CURRENT_DATE()) GROUP BY YEAR(sow_date), MONTH(sow_date)",
+    "GET_HARVESTED_CROPS": "select * from crops where state = 'Harvested' and YEAR(harvest_date) = YEAR(CURDATE())",
+    "GET_SOWN_CROPS": "select * from crops where state = 'Sown' and YEAR(sow_date) = YEAR(CURDATE())",
+    
     "SMALLHOLDING_INSERT": "insert into smallholding (size, ubication, shape, delimited) values (%s, %s, %s, %s)",
     "SMALLHOLDING_UPDATE": "update smallholding set size = %s, ubication = %s, shape = %s, delimited = %s where id = %s",
     "SMALLHOLDING_DELETE": "delete from smallholding where id = %s",
@@ -13,6 +15,7 @@
     "SHOW_SMALLHOLDINGS": "select * from smallholding",
     "SHOW_SMALLHOLDING_CROPS": "select * from crops where smallholding_id = %s",
     "SMALLHOLDINGS_CROPS": "select * from smallholding inner join crops where smallholding.id = crops.smallholding_id",
+
     "SHOW_STORAGES": "select * from storage",
     "STORAGE_INSERT": "insert into storage (max_capacity, current_capacity, storage_ubication, equipment) values (%s, %s, %s, %s)",
     "STORAGE_UPDATE": "update storage set max_capacity = %s, current_capacity = %s, storage_ubication = %s, equipment = %s where id = %s",
@@ -20,17 +23,20 @@
     "SEARCH_STORAGE": "select * from storage where id = %s",
     "SHOW_STORAGE_CROPS": "select * from crops where storage_id = %s",
     "STORAGE_CROPS": "select * from storage inner join crops where storage.id = crops.storage_id",
+    
     "SHOW_DELIVERIES": "select * from delivery",
     "DELIVERY_INSERT": "insert into delivery (client_name, deliver_date, request_date, address) values (%s, %s, %s, %s)",
     "DELIVERY_UPDATE": "update delivery set client_name = %s, deliver_date = %s, request_date = %s, address = %s where id = %s",
     "DELIVERY_DELETE": "delete from delivery where id = %s",
     "SEARCH_DELIVERY": "select * from delivery where id = %s",
     "INSERT_DETAIL": "insert into delivery_details (delivery_id, crop_id, quantity, crop_name) values (%s, %s, %s, %s)",
+    
     "SHOW_ALL_DETAILS": "select * from delivery_details",
     "SHOW_DETAILS": "select * from delivery_details where delivery_id = %s",
     "SEARCH_DETAIL": "select * from delivery_details where id = %s",
     "DELETE_DETAIL": "delete from delivery_details where id = %s",
     "SHOW_DELIVERY_MONTH": "SELECT YEAR(deliver_date) AS year, MONTH(deliver_date) AS month, COUNT(*) AS deliveries FROM delivery GROUP BY YEAR(deliver_date), MONTH(deliver_date)",
+    
     "SHOW_USER": "select * from users where email = %s",
     "SHOW_USERS": "select * from users",
     "INSERT_USER": "insert into users (email, nickname, name, picture) values (%s, %s, %s, %s)",

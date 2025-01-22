@@ -18,9 +18,7 @@ class StorageController(object):
         ) as connection, connection.cursor() as cursor:
             try:
                 cursor.execute(self._querys["SHOW_STORAGES"])
-                storages = cursor.fetchall()
-                if len(storages) == 0:
-                    raise HTTPException(status_code=400, detail={"error": "Storages not found"})
+                storages = cursor.fetchall()                
                 storages = [Storage(*storage).__dict__() for storage in storages]
                 return JSONResponse(status_code=200, content=storages)
             except mc.Error:

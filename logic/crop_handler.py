@@ -27,7 +27,7 @@ class IdHandler(CropHandler):
 class StateHandler(CropHandler):        
     
     def handle(self, request: dict):
-        if request['state'] not in ('Sown', 'Germinated', 'Harvested', 'Stored', 'Delivered', 'Delivering'):
+        if request['state'].lower() not in ('sown', 'germinated', 'harvested', 'stored', 'Delivered', 'delivering'):
             return {'error': 'Invalid state'}
         
         if request['state'] == 'Sown':
@@ -40,13 +40,13 @@ class StateHandler(CropHandler):
             if request['smallholding_id'] is None:
                 return {'error': 'Smallholding id is required for this state'}            
         
-        if request['state'] in ('Germinated', 'Harvested', 'Stored', 'Delivered', 'Delivering'):
+        if request['state'].lower() in ('germinated', 'harvested', 'stored', 'delivered', 'delivering'):
             if request['sow_date'] is None or request['harvest_date'] is None:
                 return {'error': 'Sow and harvest dates are required for this state'}            
             if request['storage_id'] is None:
                 return {'error': 'Storage id is required for this state'}
                     
-        if request['state'] in ('Stored', 'Delivered', 'Delivering') and request['storage_id'] is None:
+        if request['state'] in ('stored', 'delivered', 'delivering') and request['storage_id'] is None:
             return {'error': 'Storage id is required'}
              
         return super().handle(request)

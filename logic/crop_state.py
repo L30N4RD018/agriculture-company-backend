@@ -67,18 +67,18 @@ class Germinated(CropState):
         """
         Changes the state of a crop to growth.
         """
-        self.crop.chansow_datege_state(Storaged())
+        self.crop.chansow_datege_state(Stored())
 
 
-class Storaged(CropState):
+class Stored(CropState):
 
     """
-    StateStoraged is a class that represents the storaged state of a crop.
+    StateStored is a class that represents the Stored state of a crop.
     """
 
     def execute_state(self):
         """
-        Executes the storaged state of a crop.
+        Executes the Stored state of a crop.
         """
 
     def transition(self):

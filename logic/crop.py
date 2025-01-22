@@ -1,6 +1,6 @@
 from __future__ import annotations
 from datetime import date
-from logic.crop_state import Sown, Germinated, Storaged, Delivering, Delivered
+from logic.crop_state import Sown, Germinated, Stored, Delivering, Delivered
 
 
 class Crop(object):
@@ -198,7 +198,7 @@ class Crop(object):
         :type state: str
         :return: None
         """
-        states = {'sown': Sown(), 'germinated': Germinated(), 'storaged': Storaged(), 'delivering': Delivering(),
+        states = {'sown': Sown(), 'germinated': Germinated(), 'Stored': Stored(), 'delivering': Delivering(),
                   'delivered': Delivered()}
         self._state = states[state.lower()]
         self.state.crop = self
@@ -261,7 +261,7 @@ class Crop(object):
         :return: the crop as a tuple
         :rtype: tuple
         """
-        return (self._type, self._state, self._sow_date, self._harvest_date, 
+        return (self._type, self._state.title(), self._sow_date, self._harvest_date, 
                 self._storage_id, self._smallholding_id, self._quantity)
 
     def __update_tuple__(self) -> tuple:
@@ -270,5 +270,5 @@ class Crop(object):
         :return: the crop as a tuple
         :rtype: tuple
         """
-        return (self._type, self._state, self._sow_date, self._harvest_date, 
+        return (self._type, self._state.title, self._sow_date, self._harvest_date, 
                 self._storage_id, self._smallholding_id,  self._quantity, self._id)
